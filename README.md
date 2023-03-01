@@ -10,7 +10,7 @@ e também na parte do frotEnd
 </div>
 
 O armazenamento dos itens foi feito na API contenful ,assim é possivel ter um controle melhor do itens armazenado
-<div style="max-width:500px"> 
+<div style="max-width:200px"> 
 <img src="https://user-images.githubusercontent.com/79268565/222186494-d9177bfa-fded-4c07-b0b1-daae34ecaf7a.png">
 </div>
 
