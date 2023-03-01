@@ -1,3 +1,11 @@
+const spaceClient = "nusvw7fatp1n";
+const accessTokenClient = '-H3sRZCTECbZNX2HW9VXBv_yN5NVtzObvQ2WlKuYyAc';
+var client = contentful.createClient({
+    space: spaceClient,
+    accessToken: accessTokenClient,
+});
+
+
 //variavel
 const cartBtn = document.querySelector(".cart-btn");
 const closeCartBtn = document.querySelector(".close-cart");
@@ -19,9 +27,17 @@ let buttonsDOM = [];
 class Products {
     async getProducts() {
         try {
+            let contentful = await client.getEntries({
+                content_type: 'commerceJs'
+            })
+
+
             const result = await fetch('products.json')
             const data = await result.json()
-            let products = data.items;
+
+
+            //let products = data.items;
+            let products = contentful.items;
             products = products.map(item => {
                 const { title, price } = item.fields;// destructuring valores do array item
                 const { id } = item.sys;
@@ -155,15 +171,17 @@ class UI {
                 let id = removeItem.dataset.id;
                 cartContent.removeChild(removeItem.parentElement.parentElement)
                 this.removeItem(id);
-            } else if (event.target.classList.contains("fa-chevron-up")) {//AUMENTA AMOUNT
+            }
+            else if (event.target.classList.contains("fa-chevron-up")) { //AUMENTA AMOUNT
                 let addAmount = event.target;
                 let id = addAmount.dataset.id;
                 let tempItem = cart.find(item => item.id === id)
                 tempItem.amout = tempItem.amout + 1;
                 Storage.saveCart(cart);
                 this.setCartValues(cart);
-                addAmount.nextElementSibling.innerText = tempItem.amout;//é preciso nextElementSibling para retorna o elemento no mesmo momento
-            } else if (event.target.classList.contains("fa-chevron-down")) {
+                addAmount.nextElementSibling.innerText = tempItem.amout; //é preciso nextElementSibling para retorna o elemento no mesmo momento
+            }
+            else if (event.target.classList.contains("fa-chevron-down")) {
                 let lowerAmount = event.target;
                 let id = lowerAmount.dataset.id
                 let tempItem = cart.find(item => item.id === id);
@@ -186,7 +204,6 @@ class UI {
         //
         let cartItems = cart.map(item => item.id);
         cartItems.forEach(id => this.removeItem(id));
-        console.log(cartContent.children)
         while (cartContent.children.length > 0) {
             cartContent.removeChild(cartContent.children[0])//removendo filhos calss cartContent 
         }//removendo todo os itens do carrinhow
